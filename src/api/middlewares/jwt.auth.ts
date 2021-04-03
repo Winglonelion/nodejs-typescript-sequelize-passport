@@ -1,12 +1,17 @@
 import passport from "passport";
 
 import passportJwt from "passport-jwt";
-import config from "config";
-const { User } = require("../models")();
-const constants = require("../constants");
+import { CONFIGS } from "constants/config";
+import { HTTP_MESSAGES } from "constants/http-messages";
+import User from "models/User";
+
+
+
+
+
 
 /* istanbul ignore next */
-const jwt = () => {
+const useJWT = () => {
   return passport.use(
     "jwt",
     new passportJwt.Strategy(
@@ -14,13 +19,15 @@ const jwt = () => {
         jwtFromRequest: passportJwt.ExtractJwt.fromAuthHeaderWithScheme(
           "Bearer"
         ),
-        secretOrKey: config.get("jwt.publicKey"),
+        secretOrKey: CONFIGS.JWT.PUBLIC_KEY,
       },
       (payload, done) => {
         try {
           User.findOne({ where: { email: payload.sub } }).then((user) => {
-            if (user === null)
-              return done(null, false, { message: constants.USER_NOT_FOUND });
+            if (user === null) {
+              return done(null, false, { message: HTTP_MESSAGES.USER_NOT_FOUND });
+            }
+
             return done(null, user);
           });
         } catch (err) {
@@ -31,4 +38,4 @@ const jwt = () => {
   );
 };
 
-export default jwt
+export default useJWT

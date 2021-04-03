@@ -1,6 +1,7 @@
 import express, { Application, ErrorRequestHandler, NextFunction, Request, Response } from 'express'
 import bodyParser from "body-parser";
 import passport from "passport";
+import useJWT from './middlewares/jwt.auth'
 
 import routes from './routes'
 const { version } = require("../../package.json");
@@ -11,7 +12,7 @@ import HttpException from './utils/error-handler';
 const api = express();
 
 api.use(passport.initialize());
-// require("./middleware/jwt.auth")();
+useJWT()
 api.use(bodyParser.json());
 api.use(bodyParser.urlencoded({ extended: true }));
 
