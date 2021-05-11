@@ -1,4 +1,4 @@
-import config from 'config'
+import config from 'config';
 
 export const CONFIGS = {
   JWT: {
@@ -7,6 +7,6 @@ export const CONFIGS = {
     EXPIRES_DAYS: config.get('jwt.expires_days') as number,
   },
   DB: {
-    URI: config.get('db.uri') as string
-  }
-}
+    URI: config.get('db.uri') as string,
+  },
+};

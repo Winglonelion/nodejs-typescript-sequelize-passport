@@ -1,5 +1,5 @@
-import { createLogger, format, transports } from "winston";
-import expressWinston from "express-winston";
+import { createLogger, format, transports } from 'winston';
+import expressWinston from 'express-winston';
 
 const httpTransportOptions = {
   // host: "http-intake.logs.datadoghq.eu",
@@ -9,16 +9,16 @@ const httpTransportOptions = {
 };
 
 const logger = createLogger({
-  level: "info",
+  level: 'info',
   format: format.combine(
     format.timestamp({
-      format: "YYYY-MM-DD HH:mm:ss",
+      format: 'YYYY-MM-DD HH:mm:ss',
     }),
     format.errors({ stack: true }),
     format.splat(),
     format.json()
   ),
-  defaultMeta: { service: "auth-service" },
+  defaultMeta: { service: 'auth-service' },
   transports: [
     // new transports.File({ filename: "quick-start-error.log", level: "error" }),
     // new transports.File({ filename: "quick-start-combined.log" }),

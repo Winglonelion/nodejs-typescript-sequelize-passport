@@ -9,6 +9,8 @@
     "start": "nodemon",
     "dev": "nodemon",
     "build": "tsc",
+    "lint": "./node_modules/eslint/bin/eslint.js . --ext .js --ext .ts --ext .tsx --ext .jsx --cache",
+    "lint:fix": "yarn lint --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
@@ -26,7 +28,10 @@
     "pg": "^8.5.1",
     "sequelize": "^6.6.2",
     "swagger-jsdoc": "^6.1.0",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-prettier": "^3.1.4",
     "swagger-ui-express": "^4.1.6",
+    "prettier": "^2.2.1",
     "uuid": "^8.3.2",
     "winston": "^3.3.3"
   },
@@ -42,6 +47,13 @@
     "@types/swagger-jsdoc": "^6.0.0",
     "@types/swagger-ui-express": "^4.1.2",
     "@types/uuid": "^8.3.0",
+    "@typescript-eslint/eslint-plugin": "^4.23.0",
+    "@typescript-eslint/parser": "^4.23.0",
+    "eslint": "^7.26.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.3.1",
     "nodemon": "^2.0.7",
     "ts-node": "^9.1.1",
     "tsconfig-paths": "^3.9.0",

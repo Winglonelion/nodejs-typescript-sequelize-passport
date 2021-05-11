@@ -1,24 +1,17 @@
-import passport from "passport";
+import passport from 'passport';
 
-import passportJwt from "passport-jwt";
-import { CONFIGS } from "constants/config";
-import { HTTP_MESSAGES } from "constants/http-messages";
-import User from "models/User";
-
-
-
-
-
+import passportJwt from 'passport-jwt';
+import { CONFIGS } from 'constants/config';
+import { HTTP_MESSAGES } from 'constants/http-messages';
+import User from 'models/User';
 
 /* istanbul ignore next */
 const useJWT = () => {
   return passport.use(
-    "jwt",
+    'jwt',
     new passportJwt.Strategy(
       {
-        jwtFromRequest: passportJwt.ExtractJwt.fromAuthHeaderWithScheme(
-          "Bearer"
-        ),
+        jwtFromRequest: passportJwt.ExtractJwt.fromAuthHeaderWithScheme('Bearer'),
         secretOrKey: CONFIGS.JWT.PUBLIC_KEY,
       },
       (payload, done) => {
@@ -38,4 +31,4 @@ const useJWT = () => {
   );
 };
 
-export default useJWT
+export default useJWT;

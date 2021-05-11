@@ -1,28 +1,26 @@
-import express, { Application, ErrorRequestHandler, NextFunction, Request, Response } from 'express'
-import bodyParser from "body-parser";
-import passport from "passport";
-import useJWT from './middlewares/jwt.auth'
-import routes from './routes'
+import express, { NextFunction, Request, Response } from 'express';
+import bodyParser from 'body-parser';
+import passport from 'passport';
+import useJWT from './middlewares/jwt.auth';
+import routes from './routes';
 import HttpException from './utils/error-handler';
-const { version } = require("../../package.json");
-
-
+const { version } = require('../../package.json');
 
 const api = express();
 
 api.use(passport.initialize());
-useJWT()
+useJWT();
 api.use(bodyParser.json());
 api.use(bodyParser.urlencoded({ extended: true }));
 
-console.log('---------------> CHECK', Object.keys((routes)))
-Object.values(routes).forEach(({name, router}) => {
+console.log('---------------> CHECK', Object.keys(routes));
+Object.values(routes).forEach(({ name, router }) => {
   if (!name || !router) return;
   api.use(`/api/v1/${name}`, router);
 });
 
 api.use((err: HttpException, req: Request, res: Response, next: NextFunction) => {
-  const {status} = err;
+  const { status } = err;
   /* istanbul ignore next */
   if (status) {
     res.status(status).json({
@@ -32,12 +30,11 @@ api.use((err: HttpException, req: Request, res: Response, next: NextFunction) =>
         data: err.data,
       },
     });
-    return
   } else next(err);
 });
 
 /* istanbul ignore next */
-api.get("/version", (req, res) => {
+api.get('/version', (req, res) => {
   res.send(version);
 });
 

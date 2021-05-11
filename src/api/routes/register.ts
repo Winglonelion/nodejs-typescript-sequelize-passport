@@ -1,11 +1,9 @@
+import express from 'express';
 
-import express from "express";
-import passport from "passport";
+import { handler, type, validate } from 'api/functions/register';
+import { RouterType } from './types';
 
-import { handler, type, validate } from 'api/functions/register'
-import { RouterType } from "./types";
-
-const name = "register";
+const name = 'register';
 const router = express.Router();
 
 /**
@@ -20,8 +18,8 @@ const router = express.Router();
  *         required: true
  *         type: string
  */
-router[type]("/", validate, handler);
+router[type]('/', validate, handler);
 
 const RegisterRouter: RouterType = { name, router };
 
-export default RegisterRouter
+export default RegisterRouter;

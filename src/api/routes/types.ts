@@ -1,6 +1,6 @@
-import { Application, Router } from "express";
+import { Router } from 'express';
 
 export type RouterType = {
-  name: string
-  router: Router
-}
+  name: string;
+  router: Router;
+};

@@ -1,22 +1,20 @@
-import { createToken } from "api/utils/jwt-token";
-import passport from "passport";
-import passportLocal from "passport-local";
-import { validationResult }from "express-validator";
-import User from "models/User";
-import { HTTP_MESSAGES } from "constants/http-messages";
-import HttpException from "api/utils/error-handler";
-import { NextFunction, Request, Response } from "express";
-
+import { createToken } from 'api/utils/jwt-token';
+import passport from 'passport';
+import passportLocal from 'passport-local';
+import User from 'models/User';
+import { HTTP_MESSAGES } from 'constants/http-messages';
+import HttpException from 'api/utils/error-handler';
+import { NextFunction, Request, Response } from 'express';
 
 declare global {
+  // eslint-disable-next-line no-unused-vars
   namespace Express {
-    interface User  {
-      id: number
+    // eslint-disable-next-line no-unused-vars
+    interface User {
+      id: number;
     }
   }
 }
-
-
 
 passport.serializeUser<any, any>((req, user, done) => {
   done(null, user.id);
@@ -24,7 +22,7 @@ passport.serializeUser<any, any>((req, user, done) => {
 
 passport.deserializeUser(async (id, done) => {
   try {
-    const user = await User.findOne({ where: { id } })
+    const user = await User.findOne({ where: { id } });
     done(null, user);
   } catch (error) {
     done(error, null);
@@ -32,16 +30,15 @@ passport.deserializeUser(async (id, done) => {
 });
 
 passport.use(
-  "register",
+  'register',
   new passportLocal.Strategy(
     {
-      usernameField: "email",
-      passwordField: "password",
+      usernameField: 'email',
+      passwordField: 'password',
     },
     async (email, password, done) => {
-
       try {
-        const user = await User.findOne({ where: { email } })
+        const user = await User.findOne({ where: { email } });
         if (user) {
           return done({
             message: HTTP_MESSAGES.EMAIL_ALREADY_EXISTS,
@@ -49,10 +46,10 @@ passport.use(
           });
         }
 
-          const newUser = await User.create({ email })
-          await newUser.setPassword(password)
-                return done(null, user);
-          } catch (error) {
+        const newUser = await User.create({ email });
+        await newUser.setPassword(password);
+        return done(null, user);
+      } catch (error) {
         done(error);
       }
     }
@@ -69,22 +66,22 @@ const handler = async (req: Request, res: Response, next: NextFunction) => {
     //   });
     // }
 
-    passport.authenticate("register", (err: Error, user: User) => {
+    passport.authenticate('register', (err: Error, user: User) => {
       try {
         if (err) throw err;
         req.logIn(user, async (err: Error) => {
           /* istanbul ignore next */
           if (err) throw err;
-          const foundUser = await  User.findOne({ where: { email: user.email } })
+          const foundUser = await User.findOne({ where: { email: user.email } });
 
-          if (!foundUser) throw new HttpException(500, HTTP_MESSAGES.USER_NOT_FOUND)
+          if (!foundUser) throw new HttpException(500, HTTP_MESSAGES.USER_NOT_FOUND);
 
-          const token = await createToken(foundUser)
-                res.status(200).json({
-                  auth: true,
-                  token: token,
-                  message: HTTP_MESSAGES.USER_CREATED,
-                });
+          const token = await createToken(foundUser);
+          res.status(200).json({
+            auth: true,
+            token: token,
+            message: HTTP_MESSAGES.USER_CREATED,
+          });
         });
       } catch (err) {
         return next(err);
@@ -95,4 +92,4 @@ const handler = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export default handler
+export default handler;
