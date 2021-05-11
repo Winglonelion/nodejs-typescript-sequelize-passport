@@ -78,6 +78,7 @@ const handler = async (req: Request, res: Response, next: NextFunction) => {
           const foundUser = await  User.findOne({ where: { email: user.email } })
 
           if (!foundUser) throw new HttpException(500, HTTP_MESSAGES.USER_NOT_FOUND)
+
           const token = await createToken(foundUser)
                 res.status(200).json({
                   auth: true,

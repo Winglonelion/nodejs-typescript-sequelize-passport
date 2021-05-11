@@ -2,10 +2,9 @@ import express, { Application, ErrorRequestHandler, NextFunction, Request, Respo
 import bodyParser from "body-parser";
 import passport from "passport";
 import useJWT from './middlewares/jwt.auth'
-
 import routes from './routes'
-const { version } = require("../../package.json");
 import HttpException from './utils/error-handler';
+const { version } = require("../../package.json");
 
 
 
@@ -16,6 +15,7 @@ useJWT()
 api.use(bodyParser.json());
 api.use(bodyParser.urlencoded({ extended: true }));
 
+console.log('---------------> CHECK', Object.keys((routes)))
 Object.values(routes).forEach(({name, router}) => {
   if (!name || !router) return;
   api.use(`/api/v1/${name}`, router);
